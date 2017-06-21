@@ -12,7 +12,7 @@
             <button class="btn btn-primary" @click="confirmPass">Confirm</button>
         </div>
         <br/><br/>
-        <p>{{error.message}}</p>
+        <p>{{error}}</p>
         <br/><br/>
         <router-link to="/signup">Don't have access key ? Create it !</router-link>
     </div>
@@ -21,6 +21,7 @@
 
 <script>
     import { firebaseApp } from '../firebaseApp'
+    import { usersRef } from '../firebaseApp'
     
     export default {
         data() {
@@ -28,9 +29,7 @@
                 user: {},
                 email: '',
                 password: '',
-                error: {
-                    message: ''
-                }
+                error: ''
             }
         },
         methods: {
@@ -41,6 +40,9 @@
             },
 
             confirmPass() {
+                
+                usersRef.push()
+
                 this.$session.start();
                 this.$session.set('user', firebaseApp.auth().currentUser)
 

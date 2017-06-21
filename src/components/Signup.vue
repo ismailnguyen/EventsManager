@@ -12,7 +12,7 @@
             <button class="btn btn-primary" @click="signUp">Create</button>
         </div>
         <br/><br/>
-        <p>{{error.message}}</p>
+        <p>{{error}}</p>
         <br/><br/>
         <router-link to="/signin">Already have access key ? Sign in</router-link>
     </div>
@@ -21,6 +21,7 @@
 
 <script>
     import { firebaseApp } from '../firebaseApp'
+    import { usersRef } from '../firebaseApp'
     
     export default {
         data() {
@@ -28,9 +29,7 @@
                 user: {},
                 email: '',
                 password: '',
-                error: {
-                    message: ''
-                }
+                error: ''
             }
         },
         methods: {
@@ -40,10 +39,18 @@
                 this.email = firebaseApp.auth().currentUser.email;
             },
             signUp() {
-                firebaseApp.auth().createUserWithEmailAndPassword(this.email, this.password)
-                    .catch(error => {
-                        this.error = error
-                    })
+                
+                if (this.password.length < 6) {
+                    this.error = '6 caractères minimum !'
+                    return;
+                }
+
+                usersRef.push({
+                    email: this.email,
+                    token: this.password
+                })
+                
+                this.$router.push('/signin')
             }
         },
         mounted() {
