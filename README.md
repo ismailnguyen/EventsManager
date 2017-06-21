@@ -1,4 +1,4 @@
-# turnout
+# EventsManager
 
 > A Vue.js project
 
