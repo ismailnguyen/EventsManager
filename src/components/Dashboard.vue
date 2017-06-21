@@ -25,11 +25,17 @@
             signOut() {
                 this.$store.dispatch('signOut')
                 firebaseApp.auth().signOut()
+                this.$session.destroy();
             }
         },
         components: {
             AddEvent,
             EventItem
+        },
+        created() {
+            if (!this.$session.exists()) {
+                this.$router.push('/signin')
+            } 
         },
         mounted() {
             eventsRef.on('value', snap => {

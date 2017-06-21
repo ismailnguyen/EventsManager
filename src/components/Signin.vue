@@ -1,17 +1,20 @@
 <template>
     <div class="form-inline">
-        <h3>Sign In</h3>
+        <h3>Confirm access key</h3>
 
         <div class="form-group">
-            <input type="text" placeholder="email" class="form-control" v-model="email">
-            <input type="password" placeholder="password" class="form-control" v-model="password">
+            <p>
+                Hello {{user.displayName}}
+            </p>
             <br/>
-            <button class="btn btn-primary" @click="signIn">Sign In</button>
+            <input type="password" placeholder="password" class="form-control" v-model="password">
+            <br/><br/>
+            <button class="btn btn-primary" @click="confirmPass">Confirm</button>
         </div>
-        <br/>
+        <br/><br/>
         <p>{{error.message}}</p>
-        <br/>
-        <router-link to="/signup">Don't have account ? Sign up</router-link>
+        <br/><br/>
+        <router-link to="/signup">Don't have access key ? Create it !</router-link>
     </div>
 </template>
 
@@ -22,6 +25,7 @@
     export default {
         data() {
             return {
+                user: {},
                 email: '',
                 password: '',
                 error: {
@@ -30,12 +34,21 @@
             }
         },
         methods: {
-            signIn() {
-                firebaseApp.auth().signInWithEmailAndPassword(this.email, this.password)
-                    .catch(error => {
-                        this.error = error
-                    })
+            setUser() {
+                this.user = firebaseApp.auth().currentUser;
+
+                this.email = firebaseApp.auth().currentUser.email;
+            },
+
+            confirmPass() {
+                this.$session.start();
+                this.$session.set('user', firebaseApp.auth().currentUser)
+
+                this.$router.push('dashboard')
             }
+        },
+        mounted() {
+            this.setUser()
         }
     }
 </script>
