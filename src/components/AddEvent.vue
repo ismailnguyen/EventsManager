@@ -46,9 +46,26 @@
             }
         },
         methods: {
+            encrypt(decrypted) {
+                let token = this.$session.get('token')
+
+                return sjcl.encrypt(token, decrypted)
+            },
+
             addEvent() {
                 this.event.email = this.$store.state.user.email;
-                eventsRef.push(this.event)
+
+                // Encrypt event with user's token as encryption password
+
+                let encryptedEvent = {
+                    title: this.encrypt(this.event.title),
+                    description: this.encrypt(this.event.description),
+                    date: this.encrypt(this.event.date),
+                    location: this.encrypt(this.event.location),
+                    email: this.encrypt(this.event.email),
+                };
+
+                eventsRef.push(encryptedEvent)
             }
         }
     } 

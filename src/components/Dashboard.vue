@@ -26,6 +26,11 @@
                 this.$store.dispatch('signOut')
                 firebaseApp.auth().signOut()
                 this.$session.destroy();
+            },
+            decrypt(encrypted) {
+                let token = this.$session.get('token')
+
+                return sjcl.decrypt(token, encrypted)
             }
         },
         components: {
@@ -38,10 +43,22 @@
             } 
         },
         mounted() {
+            let token = this.$session.get('token')
+
             eventsRef.on('value', snap => {
                 let events = []
                 snap.forEach(event => {
-                    events.push(event.val())
+                    let val = event.val();
+
+                    let decryptedEvent = {
+                        title: this.decrypt(val.title),
+                        description: this.decrypt(val.description),
+                        date: this.decrypt(val.date),
+                        location: this.decrypt(val.location),
+                        email: this.decrypt(val.email),
+                    }
+
+                    events.push(decryptedEvent)
                 })
                 
                 this.$store.dispatch('setEvents', events)
