@@ -21,7 +21,6 @@
 
 <script>
     import { firebaseApp } from '../firebaseApp'
-    import { usersRef } from '../firebaseApp'
     
     export default {
         data() {
@@ -29,24 +28,42 @@
                 user: {},
                 email: '',
                 password: '',
-                error: ''
+                error: '',
+                token: ''
             }
         },
         methods: {
             setUser() {
                 this.user = firebaseApp.auth().currentUser;
-
                 this.email = firebaseApp.auth().currentUser.email;
             },
 
             confirmPass() {
                 
-                usersRef.push()
+                let userRef = firebaseApp.database().ref().child('users/' + this.user.uid)
 
-                this.$session.start();
-                this.$session.set('user', firebaseApp.auth().currentUser)
+                // Look for user token and match with user input
+                userRef.on('value', snap => {
+                    let details = []
+                    snap.forEach(event => {
+                        details.push(event.val())
+                    })
 
-                this.$router.push('dashboard')
+                    let token = details[1];
+
+                    // If user token match, go to dashboard
+                    if (token == this.password) {
+                        console.log(token)
+
+                        this.$session.start();
+                        this.$session.set('user', firebaseApp.auth().currentUser)
+
+                        this.$router.push('dashboard')
+                    }
+                    else {
+                        this.error = 'Wrong access key !'
+                    }
+                })
             }
         },
         mounted() {

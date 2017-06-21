@@ -21,7 +21,6 @@
 
 <script>
     import { firebaseApp } from '../firebaseApp'
-    import { usersRef } from '../firebaseApp'
     
     export default {
         data() {
@@ -45,7 +44,9 @@
                     return;
                 }
 
-                usersRef.push({
+                let userRef = firebaseApp.database().ref().child('users/')
+
+                userRef.child(this.user.uid).set({
                     email: this.email,
                     token: this.password
                 })
