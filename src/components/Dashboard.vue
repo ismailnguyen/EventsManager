@@ -28,7 +28,7 @@
                 this.$session.destroy();
             },
             decrypt(encrypted) {
-                let token = this.$session.get('token')
+                let token = 'ABCDEF123456'
 
                 return sjcl.decrypt(token, encrypted)
             }
@@ -43,8 +43,7 @@
             } 
         },
         mounted() {
-            let token = this.$session.get('token')
-
+            
             eventsRef.on('value', snap => {
                 let events = []
                 snap.forEach(event => {

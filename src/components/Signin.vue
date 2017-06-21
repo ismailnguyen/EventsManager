@@ -57,7 +57,6 @@
 
                         this.$session.start();
                         this.$session.set('user', firebaseApp.auth().currentUser)
-                        this.$session.set('token', token)
 
                         this.$router.push('dashboard')
                     }

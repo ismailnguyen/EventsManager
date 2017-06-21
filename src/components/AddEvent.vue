@@ -47,7 +47,7 @@
         },
         methods: {
             encrypt(decrypted) {
-                let token = this.$session.get('token')
+                let token = 'ABCDEF123456'
 
                 return sjcl.encrypt(token, decrypted)
             },
