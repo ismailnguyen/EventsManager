@@ -37,6 +37,10 @@
 
                 this.email = firebaseApp.auth().currentUser.email;
             },
+            hash(password) {
+                return sha256(password);
+            },
+
             signUp() {
                 
                 if (this.password.length < 6) {
@@ -48,7 +52,7 @@
 
                 userRef.child(this.user.uid).set({
                     email: this.email,
-                    token: this.password
+                    token: this.hash(this.password)
                 })
                 
                 this.$router.push('/signin')
