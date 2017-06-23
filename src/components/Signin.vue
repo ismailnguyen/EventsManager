@@ -46,22 +46,6 @@
                 
                 let userRef = firebaseApp.database().ref().child('users/' + this.user.uid)
 
-                // fetch(`https://auth.jumpcloud.com/authenticate`, {
-                //     method: 'post',
-                //     headers: {
-                //         'Accept': 'application/json',
-                //         'Content-Type': 'application/json',
-                //         'x-api-key' : 'f1bb0f029adb8a5811424d92218566b805165406',
-                //     },
-                //     mode: 'no-cors',
-                //     body: JSON.stringify({
-                //         'username': 'ismail',
-                //         'password': 'nguyen'
-                //     })
-                // })
-                // .then(response => console.log(response))
-                //.then(json => console.log(json))
-
                 //Look for user token and match with user input
                 userRef.on('value', snap => {
                     let details = []
