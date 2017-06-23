@@ -47,7 +47,7 @@
         },
         methods: {
             encrypt(decrypted) {
-                let token = 'ABCDEF123456'
+                let token = sha256('32TéERGOJ!geie02GRZO')
 
                 return sjcl.encrypt(token, decrypted)
             },
